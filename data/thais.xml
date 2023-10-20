@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../bdinski.rnc" type="application/relax-ng-compact-syntax"?>
-<?xml-model href="../bdinski.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="../schemas/bdinski.rnc" type="application/relax-ng-compact-syntax"?>
+<?xml-model href="../schemas/bdinski.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <root>
     <metadata>
         <name>Alexandre Popowycz</name>

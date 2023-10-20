@@ -1,0 +1,215 @@
+# bdinski.rnc
+# David J. Birnbaum (djbpitt@gmail.com)
+# 2012-12-07 djb
+# Project home: http://bdinski.obdurodon.org
+# 
+# 2012-12-10: added <start> to deal with texts that begin in the middle of a folio
+# 2014-05-27: updated to conform to editorial decisions made at project meeting in Ghent 2014-05-21
+# 
+# =====================================================================
+start = root
+# =====================================================================
+# 
+# =====================================================================
+# line content can appear wherever textual content is permitted, such as inside a line or a 
+# subcomponent of a line
+# =====================================================================
+lineContent =
+    mixed {
+        (editionParagraphNo
+         | editionPageNo
+         | sup
+         | lig
+         | gap
+         | add
+         | red
+         | subst
+         | supplied
+         | damage
+         | problem)*
+    }
+# =====================================================================
+# 
+# =====================================================================
+# A document has a single <root> element, which contains sequences of <folio> elements followed by a 
+# mixture of <line> and <lacuna> elements. The first child of the <root> must be a <metadata> element, 
+# which contains the name and email address of the editor (exactly one) of the section.
+# 
+# The text may or may not begin at the beginning of the page. There is an empty <start/> element
+# before the first <line> of the text being edited at the moment and an empty <end/> tag after the
+# last line of that text. The position of <start/> and <end/> is controlled separately by bdinski.sch.
+# =====================================================================
+root =
+    element root {
+        metadata,
+        (folio, (line | lacuna | \start | end)+)+
+    }
+# =====================================================================
+# 
+# =====================================================================
+# <metadata> contains the name and email address of the editor (just one) of the section
+# =====================================================================
+metadata = element metadata { name, email }
+name = element name { text }
+email = element email { text }
+# =====================================================================
+# 
+# =====================================================================
+# <folio> is an empty element with an @n attribute, the value of which is a number followed by "r" or "v"
+# =====================================================================
+folio =
+    element folio {
+        attribute n {
+            xsd:token { pattern = "\d+[rv]" }
+        },
+        empty
+    }
+# =====================================================================
+# 
+# =====================================================================
+# <lacuna> in the old typeset edition has text from a different manuscript, with folio numbers
+# and abbreviations, but no superscription or ligatures. <folio> elements in a <lacuna> have 
+# roughly the same structure as <folio> elements for the Bdinski sbornik itself. See immediately 
+# below for details.
+# =====================================================================
+lacuna = element lacuna { (folio_lacuna | line)+ }
+# =====================================================================
+# 
+# =====================================================================
+# a <folio> element inside a <lacuna> element is an empty element with an @n attribute. This is the
+# same as the structure of a folio element in tbe Bdinski sbornik text, except that column letters
+# a, b, c, and d are permitted in addition to sides r and v.
+# =====================================================================
+folio_lacuna =
+    element folio {
+        attribute n {
+            xsd:token { pattern = "\d+[rvabcd]" },
+            empty
+        }
+    }
+# =====================================================================
+# 
+# =====================================================================
+# <abbrev> occurs only inside <lacuna>. Expansions of abbreviations in the actual Bdinski sbornik text
+# that occur in the typeset edition are removed from the new electronic text, which transcribes the text 
+# as it occurs in the manuscript, without expanding abbreviations.
+# =====================================================================
+abbrev = element abbrev { text }
+# =====================================================================
+# 
+# =====================================================================
+# a <line> of the Bdinski sbornik contains text mixed with a variety of elements, some pertaining to the
+# manuscript (e.g., corrections, superscription, ligatures, etc.) and some to the print edition (e.g.,
+# paragraph and page numbering, which is retained for reference purposes). The contents of a <line>
+# are defined in the "lineContent" pattern at the top of this schema file, and the meaning of the individual
+# constituents of the content model are described below.
+# 
+# <supplied> (text added to a line by an editor) may have the same content as a whole line, and the <line>
+# element content model is used for that purpose
+# =====================================================================
+line = element line { lineContent }
+# =====================================================================
+# 
+# =====================================================================
+# the typeset edition numbers the subsections (not always paragraphs) of some (not all) texts. We
+# retain those numbers for reference purposes. They are empty elements, with an @n attribute that
+# records the numerical value.
+# =====================================================================
+editionParagraphNo =
+    element editionParagraphNo {
+        attribute n { xsd:integer },
+        empty
+    }
+# =====================================================================
+# 
+# =====================================================================
+# the page numbers from the typeset edition are not part of the OCR, and are entered manually by the 
+# encoder for reference purposes. These are empty elements, with an @n attribute that records the
+# numerical value.
+# =====================================================================
+editionPageNo =
+    element editionPageNo {
+        attribute n { xsd:integer },
+        empty
+    }
+# =====================================================================
+# 
+# =====================================================================
+# superscript text is encoded as a <sup> elements. These may be nested, that is, a superscript
+# characater may have another superscript character on top of it. 
+# =====================================================================
+sup =
+    element sup {
+        mixed { sup* }
+    }
+# =====================================================================
+# 
+# =====================================================================
+# text in red is tagged as <red>
+# =====================================================================
+red = element red { lineContent }
+# =====================================================================
+# 
+# =====================================================================
+# ligatures are entered as a sequence of their components, wrapped in <lig> tags. For example, a
+# ligature of "a" and "u" would be encoded as <lig>au</lig>. The distinctive double-omicron (or
+# perhaps closed omega) character of the manuscript is encoded as two omicron letters without
+# markup, that is, without <lig> tags
+lig = element lig { text }
+# =====================================================================
+# 
+# =====================================================================
+# <supplied> is used for text that is introduced into the transcription from another source,
+# typically another manuscript or by conjecture, where the Bdinski sbornik manuscript is
+# determined to be damaged or otherwise incomplete. <supplied> is used for small amounts of
+# text, typically within a line; large lacunae are tagged as <lacuna>. If the supplied text
+# has a specific source, such as an edition or another manuscript, and was not just invented
+# by the tagger, the source should be indicated with the @source attribute. The reason for
+# the lacuna must be indiated with a @reason attribute, the only legal values of which are
+# 'illegible', 'omitted', and 'damage'.
+# =====================================================================
+supplied = element supplied { reason, source?, lineContent }
+source = attribute source { text }
+reason = attribute reason { "illegible" | "omitted" | "damage" | "erased" }
+# =====================================================================
+# 
+# =====================================================================
+# <start/> marks the start of the text and <end/> marks the end. There must be exactly one <start/> 
+# and one <end/> element in the document. The <start/> element must be in the first folio, before 
+# the first <line> element of the text being encoded (but after lines of the preceding textual unit,
+# if there any before the text we are encoding begins), and <end/> must be similarly located in the
+# last folio. The position of <start/> and <end/> are controlled by bdinski.sch.
+# =====================================================================
+\start = element start { empty }
+end = element end { empty }
+# =====================================================================
+# 
+# =====================================================================
+# <subst> is used for scribal correction, and must have exactly two children, <del> and <add>
+# (in that order). 
+# 
+# <del> and <add> may also occur independently, <del> for deletions that are not replaced (such
+# as erasures) and <add> for insertions. 
+#
+# <add> may record, in an optional @place attribute, the location of an insertion, where the only
+# legal value (at the moment) is 'sl' (supralinear). <add> may also record, with a @hand attribute 
+# that has the value "other", that the insertion is not in the original hand (the only legal value 
+# of @hand is "other"). Text that has been deleted conceptually, but is still legible, may be tagged 
+# as <del status="partial">.
+# 
+# If deleted text cannot be discerned at all, the <del> element must contain an empty <gap/>
+# element. @reason, which is a required attribute of <gap/>, typically has values like 'illegible'
+# or 'damage'. @extent, which is optional, takes an integer value that records the approximate 
+# number of characters missing.
+# =====================================================================
+subst = element subst { add, del }
+del = element del { status?, (unclear | lineContent) }
+status = attribute status { "partial" }
+unclear = element unclear { lineContent }
+add = element add { place?, hand?, lineContent }
+place = attribute place { 'sl' }
+hand = attribute hand { "other" }
+gap = element gap { reason, extent?, empty }
+extent = attribute extent { xsd:int }
+damage = element damage { unclear | gap | lineContent }
+problem = element problem { lineContent }
