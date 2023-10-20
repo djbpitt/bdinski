@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#set var="title" value="Optical character recognition" -->
+    <!--#set var="author" value="Aleksandra Zaytseva" -->
+    <!--#set var="author_email" value="dmitrivna@gmail.com" -->
+    <!--#config timefmt="%Y-%m-%dT%X%z" -->
+    <head>
+        <title><!--#echo var="title" --></title>
+        <!--#include virtual="inc/bdinski-header.html" -->
+    </head>
+    <body>
+        <!--#include virtual="inc/bdinski-boilerplate.html" -->
+        <h3>The Project</h3>
+        <p>Optical character recognition (OCR) for the <cite>Bdinski sbornik</cite> project was
+            implemented by Aleksandra Zaytseva under the supervision of David J. Birnbaum. The
+            software selected for this part of the project was <a href="http://finereader.abbyy.com"
+                >ABBYY Finereader</a>, version 11, which had been employed in the <a
+                href="http://suprasliensis.obdurodon.org"><cite>Codex Suprasliensis</cite></a>
+            project, as well. The source was Scharpe, Jan L. and F. Vyncke. 1973. <cite>Bdinski
+                Zbornik. An Old-Slavonic Menologium of Women Saints</cite> (Ghent University Library
+            Ms. 408, A.D. 1360). Brugge: De Tempel. The original typeset text looks like:</p>
+        <p><img src="images/sample.png" alt="[Sample text]" style="padding-left:1em;" /></p>
+        <h3>Scanning</h3>
+        <p>ABBYY Finereader can perform OCR on either pregenerated PDF image files or input fed
+            directly from the scanner into the software through the TWAIN interface. The latter
+            approach, scanning directly into the program from the flatbed scanner, yielded much
+            better results. Scans were performed at 300 dpi; we tried 400 dpi in the hope of
+            resolving some recognition problems, but we found that the recognition rate at the two
+            resolutions was roughly identical.</p>
+        <h3>Language settings and the pattern editor</h3>
+        <p>The OCR process required us to select a <dfn>language</dfn>, train the system to map
+            glyph images to character (code points) in the language, and then convert text areas
+            from image to character stream.</p>
+        <p>To select and edit the language or languages recognized, go to Tools → Language Editor.
+            There you can either select from a list of existing languages or create a new one (“New
+            …” at the bottom). To edit the selected or custom language in order to choose among
+            available characters or modify the lookup dictionary, hit “Properties,” then the “…”
+            button next to the Alphabet bar.</p>
+        <p>We initially set the recognition language to Russian (OCS was not an option) in the hope
+            that the pretrained knowledge of modern Cyrillic that shipped with the product would
+            improve the recognition rate. We found that the difference between the black-letter
+            typeface in the input source and modern Russian typography was such that we obtained
+            better results starting with a completely clean slate. That is, we created a separate,
+            custom language. All in all, we found this more reliable (quicker to train, more
+            accurate results) than using Russian or even pre-revolutionary Russian as a preset
+            language.</p>
+        <p>We found it frustrating that although the Alphabet editing feature permits us to identify
+            the characters to be recognized, certain ones cannot be excluded (e.g., Latin “x”) and
+            others cannot be included (such as the entire Unicode Cyrillic Extended-B range; <a
+                href="http://www.unicode.org/charts/PDF/UA640.pdf"
+                >http://www.unicode.org/charts/PDF/UA640.pdf</a>). We understand that the use of a
+            pretrained language might entail a commitment to a standard character inventory, but we
+            see no reason why a custom language setting should not make the entire Unicode BMP
+            available. As is, during the recognition process it is not possible simply to copy and
+            paste a new symbol into the program (ADD IMAGE). What we did instead was utilize
+            placeholders (e.g., <span class="ocs">я</span> for <span class="ocs">&#xa657;</span>,
+            which we then replaced with a global search and replace operation after the document was
+            saved to a Microsoft Word file.</p>
+        <p>The ABBYY program was surprisingly inconsistent, sometimes recognizing a character
+            consistently for a while and beginning to make mistakes later. Reading through the same
+            page multiple times may yield different results each time. Where the program makes a
+            consistent mistake due to a training error, such as inadvertently mapping a glyph image
+            to the wrong character, it is possible to undo the erroneous training by going through
+            Pattern Editor (“Tools” → “Pattern Editor”). Select the language you’re using and hit
+            “Edit …”. A screen of symbols that have been stored during training will open, and one
+            can then delete the symbols that are being misrecognized consistently and then retrain
+            the page or document.</p>
+        <h3>Reading and training</h3>
+        <p>After scanning each page we found it most efficient first to delete or edit the green
+            text boxes that define the areas to which OCR will be applied. This enabled us to remove
+            running headers, footnotes, and other areas that we did not want to retain in our
+            output.</p>
+        <p>To train, you must go to “Tools” → “Options”, and then check the box that says “Read with
+            Training.” This box will uncheck itself after every reading, so you must follow this
+            process every time. If you do not, it will read all your pages (or your selected page)
+            automatically. This could be an issue if you have already manually edited the mistakes
+            in the screen on the right side, as it will revert it to the standard reading.</p>
+        <p>If you just hit “Read,” it will read the entire document. To read on selections,
+            highlight the desired pages and right-click. To read selected blocks of text, outline
+            them with the green box and right-click.</p>
+        <p>Training itself is a fairly straightforward process. As was noted above, it is not
+            possible to copy and paste new symbols into the Training field, and if there is not an
+            option for a certain letter, it is necessary either to edit the range of available
+            characters in Language Editor (if permitted), or replace it by employing a global
+            search-and-replace operation to post-process the output Word file. If the trainer has
+            selected only part of the letter, or more than one letter/symbol, it is possible to
+            adjust the recognition area with the help of the “«” and “»” buttons, which can join or
+            unjoin what appear to be discrete glyphs (separated by white space).</p>
+        <p>After training and reading, letters about which the system is uncertain are highlighted
+            on the right side of the screen in turquoise. The user can correct these manually, but
+            those corrections are not used to update the training. It is possible to correct any
+            character, whether highlighted in turquoise or not, but in general the system showed a
+            fairly good awareness of which recognition moments were uncertain, and it proved most
+            efficient for us to review on the turquoise sections at this stage. The remainder is not
+            error-free, but since the entire output will undergo comprehensive proofreading,
+            correction, and editing at a later stage in the development process, we felt that any
+            further correction could be deferred until that time.</p>
+        <p>One of the trickiest and most frustrating aspects of the training and reading workflow if
+            that if a glyph is recognized incorrectly after being read and you cannot just copy and
+            paste it (WHAT DOES THIS MEAN?). One way of correcting the error is to retrain the whole
+            page, butthis is tedious and sometimes counterproductive in that it may correct one
+            error while introducing another. Alternatively, the user can select a small area of text
+            to be trained, select “read with training” and right click on that selected text box to
+            read only that area. The user can then find the symbol in the given alphabet (“…” next
+            to the text box), copy it, close the trainer without saving the pattern, and delete the
+            unnecessary text area. This occurred fairly frequently with letters that were adorned
+            with diacritics or superscript letters.</p>
+        <p>Another frustrating detail is that it is not possible to train the system on glyphs that
+            it incorrectly thinks it has recognized. During the training process the system will
+            stop and query the user when it is uncertain, but if it is certain but incorrect, there
+            is no way to select for training a glyph on which it has not stopped on its own.</p>
+        <h3>Saving, opening, etc.</h3>
+        <p>It is possible to save selected pages by highlighting them in the left hand side and
+            right-clicking. To save the entire project, the user must specifically select “Save
+            FineReader Document” under “File.” Likewise, to open a project, the user must
+            specifically select “Open FineReader Document” under “File”; simply hitting “Open” will
+            open only an individual file, and not an entire project. Saving the project means saving
+            the training, so this is an important step if the OCR is not coing to be performed all
+            in one session.</p>
+        <h3>Recognition issues</h3>
+        <p>The following problems arose during the project:</p>
+        <ul>
+            <li>Mistook б (b) for six (6), o for zero (0), and з (z) for three (3).</li>
+            <li>Occasionally skipped or inserted spaces.</li>
+            <li>Mixed up в and б regularly.</li>
+            <li>Mixed up И, Н, and П constantly.</li>
+            <li>Mistook “м” for “iл”</li>
+            <li>Inconsistently recognized “ы“, often making it “ьi”</li>
+            <li>Capitals in general were very poorly recognized. In addition, it would capitalize
+                lower case letters and make lowercase letters that should have been
+                capitalized.</li>
+        </ul>
+    </body>
+</html>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#set var="title" value="Bdinski sbornik" -->
+    <!--#config timefmt="%Y-%m-%dT%X%z" -->
+    <head>
+        <title><!--#echo var="title" --></title>
+        <!--#include virtual="inc/bdinski-header.html" -->
+        <style type="text/css">
+            img.folio {
+                max-width:433px;
+                width:40%;
+                float:right;
+                margin:0 0 1em 1em;
+                border:none;
+            }
+            body {
+                counter-reset: textno;
+            }
+            /* Broken; see http://code.google.com/p/chromium/issues/detail?id=71052, but the fix doesn't seem to help 
+            td:first-child:before {
+                counter-increment: textno;
+                content: counter(textno) ". ";
+            } */
+            td:nth-child(1){ 
+                text-align: right;
+            }
+            #blah1 {}
+        </style>
+    </head>
+    <body>
+        <h1><a class="logo" href="http://www.obdurodon.org">&lt;oo&gt;</a>&#x2192;<a
+                href="http://bdinski.obdurodon.org" class="logo">&lt;bs&gt;</a>
+            <cite><!--#echo var="title" --></cite></h1>
+        <hr />
+        <div>
+            <a href="images/jpg/bdinski001r.jpg"><img class="folio" alt="[Folio 1r]"
+                    src="images/jpg/bdinski001r.jpg" /></a>
+            <p class="boilerplate">
+                <span><strong>Maintained by:</strong> David J. Birnbaum (<a
+                        href="mailto:djbpitt@gmail.com">djbpitt@gmail.com</a>) <a
+                        href="http://creativecommons.org/licenses/by-nc-sa/3.0/"
+                        style="outline: none;">
+                        <img src="http://www.obdurodon.org/images/cc/88x31.png"
+                            alt="[Creative Commons BY-NC-SA 3.0 Unported License]"
+                            title="Creative Commons BY-NC-SA 3.0 Unported License"
+                            style="height: 1em; vertical-align: text-bottom;" />
+                    </a>
+                </span>
+                <span><strong>Last modified:</strong>
+                    <!--#echo var="LAST_MODIFIED" --></span>
+            </p>
+        </div>
+        <hr />
+        <h2><cite><!--#echo var="title" --></cite></h2>
+        <h3>Manuscript and text</h3>
+        <!--#include virtual="inc/choose-page-top.xml" -->
+        <table border="1" style="margin-top: 1em;">
+            <tr>
+                <th rowspan="2">Position</th>
+                <th colspan="2">Html</th>
+                <th rowspan="2">Raw xml</th>
+                <th rowspan="2">Editor</th>
+            </tr>
+            <tr>
+                <th>Continuous</th>
+                <th>Folios</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><a href="abraham.html">Mary, Abraham’s niece</a></td>
+                <td><a href="pages/bdinski001r.html">1r1</a>–<a href="pages/bdinski017v.html"
+                        >17v11</a></td>
+                <td><a href="abraham.xml">abraham.xml</a></td>
+                <td>Sels</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><a href="theodora.html">Theodora</a></td>
+                <td><a href="pages/bdinski017v.html">17v12</a>–<a href="pages/bdinski039r.html"
+                        >39r4</a></td>
+                <td><a href="theodora.xml">theodora.xml</a></td>
+                <td>Popowycz</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><a href="thecla.html">Thecla</a></td>
+                <td><a href="pages/bdinski039r.html">39r5</a>–<a href="pages/bdinski058r.html"
+                        >58r12</a></td>
+                <td><a href="thecla.xml">thecla.xml</a></td>
+                <td>Popowycz</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><a href="paraskeva.html">Petka</a></td>
+                <td><a href="pages/bdinski058r.html">58r13</a>–<a href="pages/bdinski072r.html"
+                        >72r6</a></td>
+                <td><a href="paraskeva.xml">paraskeva.xml</a></td>
+                <td>Popowycz</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td><a href="barbara-julijanija.html">Barbara and Julijanija</a></td>
+                <td><a href="pages/bdinski072r.html">72r7</a>–<a href="pages/bdinski077r.html"
+                        >77r16</a></td>
+                <td><a href="barbara-julijanija.xml">barbara-julijanija.xml</a></td>
+                <td>Sels</td>
+            </tr>
+            <tr>
+                <td>15</td>
+                <td><a href="colophon.html">Colophon</a></td>
+                <td><a href="pages/bdinski242r.html">242r1</a>–<a href="pages/bdinski242r.html"
+                        >242r19</a></td>
+                <td><a href="colophon.xml">colophon.xml</a></td>
+                <td>Birnbaum</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: left;">(Other texts coming soon)</td>
+            </tr>
+        </table>
+        <!--        <table border="1" style="margin-top: 1em;">
+            <tr>
+                <th rowspan="2">Text</th>
+                <th rowspan="2">Folios</th>
+                <th colspan="2">Html</th>
+                <th rowspan="2">Raw xml</th>
+                <th rowspan="2">Editor</th>
+            </tr>
+            <tr>
+                <th>Continuous</th>
+                <th>First page</th>
+            </tr>
+            <tr>
+                <td>Abraham</td>
+                <td>1r1–17v11</td>
+                <td><a href="abraham.html">Abraham</a></td>
+                <td><a href="pages/bdinski001r.html">1r</a></td>
+                <td><a href="abraham.xml">abraham.xml</a></td>
+                <td>Sels</td>
+            </tr>
+            <tr>
+                <td>Barbara and Julijanija</td>
+                <td>72r7–77r16</td>
+                <td><a href="barbara.html">Barbara and Julijanija</a></td>
+                <td><a href="pages/bdinski072r.html">72r</a></td>
+                <td><a href="barbara-julijanija.xml">barbara-julijanija.xml</a></td>
+                <td>Sels</td>
+            </tr>
+            <tr>
+                <td>Colophon</td>
+                <td>242r1–242r19</td>
+                <td><a href="colophon.html">Colophon</a></td>
+                <td><a href="pages/bdinski242r.html">242r</a></td>
+                <td><a href="colophon.xml">colophon.xml</a></td>
+                <td>Birnbaum</td>
+            </tr>
+            <tr>
+                <td colspan="6">(Other texts coming soon)</td>
+            </tr>
+        </table>-->
+
+        <h3>Supporting materials</h3>
+        <ul>
+            <li><a href="bibliography.html"
+                >Bibliography</a><!-- (last modified:
+                <!-\-#flastmod virtual="bibliography.html" -\->)--></li>
+            <li><a
+                    href="http://adore.ugent.be/view/archive.ugent.be:973E9242-B062-11E1-9EF1-99BDAAF23FF7"
+                    >High-resolution scans</a> (hosted by the Universiteitsbibliotheek Gent)</li>
+        </ul>
+        <h3>Development reports</h3>
+        <ul>
+            <li><a href="ocr-procedure.html">Optical character
+                recognition</a><!-- (last modified:
+                <!-\-#flastmod virtual="ocr-procedure.html" -\->)--></li>
+            <li><a href="encoding-guidelines.html">Encoding
+                guidelines</a><!-- (last modified:
+                <!-\-#flastmod virtual="encoding-guidelines.html" -\->)--></li>
+        </ul>
+        <h3>Development files</h3>
+        <ul>
+            <li>Relax NG schema: <a href="bdinski.rnc"
+                >bdinski.rnc</a><!-- (last modified:
+                <!-\-#flastmod virtual="bdinski.rnc" -\->)--></li>
+            <li>Schematron schema: <a href="bdinski.sch">bdinski.sch</a></li>
+        </ul>
+        <hr />
+        <p style="font-size: smaller;">Texts encoded by David J. Birnbaum (<a
+                href="mailtodjbpitt@gmail.com">djbpitt@gmail.com</a>), Michel de Dobbeleer (<a
+                href="mailto:michel.dedobbeleer@ugent.be">michel.dedobbeleer@ugent.be</a>),
+            Alexandre Popowycz (<a href="mailto:alexandre.popowycz@ugent.be"
+                >alexandre.popowycz@ugent.be</a>), and Lara Sels (<a
+                href="mailto:lara.sels@ugent.be">lara.sels@ugent.be</a>)</p>
+    </body>
+</html>

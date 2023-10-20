@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#set var="title" value="Bdinski sbornik encoding guidelines" -->
+    <!--#set var="author" value="David J. Birnbaum" -->
+    <!--#set var="author_email" value="djbpitt@gmail.com" -->
+    <!--#config timefmt="%Y-%m-%dT%X%z" -->
+    <head>
+        <title><!--#echo var="title" --></title>
+        <link rel="stylesheet" type="text/css" href="obdurodon/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="obdurodon/css/bdinski.css" />
+        <style type="text/css">
+            .os{
+                font-family:Bukyvede !important;
+                font-size:larger;
+            }</style>
+        <!--#include virtual="inc/bdinski-header.html" -->
+    </head>
+    <body>
+        <!--#include virtual="inc/bdinski-boilerplate.html" -->
+        <p style="font-size:smaller">Developed by David J. Birnbaum, Michel de Dobbeleer, Alexandre
+            Popowycz, and Lara Sels</p>
+        <div id="contents">
+            <h3>Contents</h3>
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#schema">Schemas</a> (Relax NG and Schematron)</li>
+                <li><a href="#markup">Structural markup</a>
+                    <ul>
+                        <li>Features of the manuscript: <a href="#lines">lines</a>, <a
+                                href="#folios">folios</a>, <a href="#superscription"
+                                >superscription</a>, <a href="#division">word division</a>, <a
+                                href="#color">color</a>, <a href="#abbreviation">abbreviation</a>,
+                                <a href="#lacunae">lacunae</a>, <a href="#corrections"
+                                >corrections</a>, <a href="#insertions">deletions and
+                            insertions</a>, <a href="#damage">damage</a>, <a href="#problem">generic
+                                problems</a></li>
+                        <li>Features of the text: <a href="#beginning">beginning and end</a></li>
+                        <li>Features of the digital edition: <a href="#metadata">metadata</a> (root,
+                            editor, email)</li>
+                        <li>Features of the 1973 print edition: <a href="#paragraphs"
+                            >paragraphs</a>, <a href="#pages">pages</a>, <a href="#asterisks"
+                                >asterisks and footnotes</a></li>
+                    </ul></li>
+                <li><a href="#character">Transcription and character coding</a>
+                    <ul>
+                        <li>Letters: <a href="#capitalization">capitalization</a>, <a
+                                href="#ligatures">ligatures</a>, <a href="#e">e</a>, <a href="#o"
+                                >o</a>, <a href="#u">u</a>, <a href="#jery">jery and jer
+                            letters</a>, <a href="#t">t</a></li>
+                        <li>Non-letters: <a href="#titlo">titlo and pokrytie</a>, <a
+                                href="#other_diacritics">other diacritics</a>, <a href="#numbers"
+                                >numbers</a>, <a href="#punctuation">punctuation</a></li>
+                    </ul></li>
+            </ul>
+        </div>
+        <hr />
+        <div id="introduction">
+            <h3>Introduction</h3>
+            <p>This document is a guide for encoding the <cite>Bdinski sbornik</cite> in XML, which
+                is subsequently transformed to HTML for publication at <a
+                    href="http://bdinski.obdurodon.org">http://bdinski.obdurodon.org</a>. The
+                starting point of the digital edition is the 1973 typeset edition, which we
+                digitized through <a href="ocr-procedure.html">optical character recognition</a>.
+                Each textual unit (text) is encoded as a separate XML file; for example, the raw
+                XML-encoded version of the first (Abraham) text is available at <a
+                    href="abraham.xml">http://bdinski.obdurodon.org/abraham.xml</a>. If you just
+                click on this link, some browsers will download the file, some will display it with
+                markup, and some will display just the textual content, without markup. If what you
+                see is not what you want (browsers typically reformat the white space in XML files
+                for rendering, which misrepresents the contents), you can download the file instead
+                of just clicking on the link, whereupon you can open it in the application of your
+                choice. Project development is performed with the help of the <a
+                    href="http://www.oxygenxml.com">&lt;oXygen/&gt;</a> XML editor and integrated
+                development environment.</p>
+        </div>
+        <div id="schema">
+            <h3>Editing with a schema</h3>
+            <p>The structure of a file for the project (which elements are permitted to occur where)
+                is described by a Relax NG schema (<a href="bdinski.rnc">bdinski.rnc</a>) and a
+                Schematron schema (<a href="bdinski.sch">bdinski.sch</a>), which can be linked to
+                the file itself in &lt;oXygen/&gt;. We use both schemas because they validate
+                different aspects of the structure. There are two reasons to link the schemas to the
+                file:</p>
+            <ol>
+                <li>If a schema is linked to the file, &lt;oXygen/&gt; will perform real-time
+                    validation, providing feedback during the editing process about whether the
+                    markup follows the rules. This helps the encoder avoid introducing erroneous
+                    markup.</li>
+                <li>If a schema is linked to the file, &lt;oXygen/&gt; will provide prompting and
+                    command completion. For example, if the encoder types an angle bracket,
+                    &lt;oXygen/&gt; will use the schema to determine which elements are legal at the
+                    current cursor position, and will drop down a list of items on which the encoder
+                    can click to enter the tags.</li>
+            </ol>
+            <p>To attach a schema to a file, click on <q>Document</q> in the menu bar above the
+                &lt;oXygen/&gt; editing window, then on <q>Schema,</q> and then on <q>Associate
+                    schema.</q> To the right of the text-entry box labeled <q>URL</q> is a small
+                icon shaped like a folder. Click on that and navigate to the main Bdinski sbornik
+                Dropbox folder, which is called <q>bdinski-sbornik.</q> Inside that folder, select
+                the file called <q>bdinski.rnc,</q> ensure that <q>Use relative paths</q> is
+                checked, and click <q>OK.</q> (You don’t have to specify the schema type;
+                &lt;oXygen/&gt; will figure that out on its own.) Then do the same with
+                    <q>bdinski.sch</q>. For each schema you add &lt;oXygen/&gt; will insert a line
+                near the top of the file you are editing, and with both schema links in place the
+                top of your file will look something like:</p>
+            <pre>&lt;?xml-model href="../bdinski.rnc" type="application/relax-ng-compact-syntax"?&gt;
+&lt;?xml-model href="../bdinski.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?&gt;</pre>
+            <p>You have to do this only once for each file you edit. Once the lines have been
+                inserted by &lt;oXygen/&gt; into the top of your document, &lt;oXygen/&gt; will know
+                to use the two schemas to validate the document and to provide command
+                completion.</p>
+        </div>
+        <div id="markup">
+            <h3>Markup</h3>
+            <div>
+                <h4>Features of the manuscript</h4>
+                <p>The <cite>Bdinski sbornik</cite> markup is based primarily on the physical layout
+                    of the manuscript as a series of folios, each of which contains a series of
+                    lines. We always encode entire folios, which means that if a text begins in the
+                    middle of one folio and ends in the middle of a different folio, we encode both
+                    folios in their entirety, including the lines that occur before the beginning of
+                    the text we are editing and those that occur after the end of that text.</p>
+                <div id="lines">
+                    <h5>Lines</h5>
+                    <p>Every line in the manuscript is encoded as a <code>&lt;line&gt;</code>
+                        element, with a <code>&lt;line&gt;</code> start tag and a
+                            <code>&lt;/line&gt;</code> end tag, e.g.:</p>
+                    <pre><code>&lt;line&gt;</code><span class="os">двєрца мала посрѣдѣ єю.</span><code>&lt;/line&gt;</code></pre>
+                    <p>If a word is divided across a line break, the editors should add a hyphen at
+                        the end of the first of the two lines, corresponding to modern hyphenation
+                        conventions, e.g.:</p>
+                    <pre><code>&lt;line&gt;</code><span class="os">же єи седмию лѣть. ѡ-</span><code>&lt;/line&gt;
+&lt;line&gt;</code><span class="os">н же повелѣ еи быти вь<code>&lt;/line&gt;</code></span></pre>
+                </div>
+                <div id="folios">
+                    <h5>Folios</h5>
+                    <p>The beginning of each folio is marked as an empty (self-closing)
+                            <code>&lt;folio&gt;</code> element, which has an <code>@n</code>
+                        attribute that consists of a sequence of digits followed by the letter
+                            <i>r</i> for <q>recto</q> or <i>v</i> for <q>verso.</q> The following
+                        example shows an abbreviated version of how the encoding of folio 22r and
+                        folio 22v might look:</p>
+                    <pre><code>&lt;folio n="22r"/&gt;
+&lt;line&gt;</code>first line of 22r<code>&lt;/line&gt;
+&lt;line&gt;</code>second line of 22r<code>&lt;/line&gt;
+&lt;!-- more lines --&gt;
+&lt;line&gt;</code>last line of 22r<code>&lt;/line&gt;
+&lt;folio n="22v"/&gt;
+&lt;line&gt;</code>first line of 22v<code>&lt;/line&gt;
+&lt;line&gt;</code>second line of 22v<code>&lt;/line&gt;
+&lt;!-- more lines --&gt;
+&lt;line&gt;</code>last line of 22v<code>&lt;/line&gt;</code></pre>
+                </div>
+                <div id="superscription">
+                    <h5>Superscription</h5>
+                    <p>Superscription is encoded with the <code>&lt;sup&gt;</code> element,
+                        e.g.:</p>
+                    <pre><code>&lt;line&gt;</code><span class="os">вьнѣшнѣи хизинѣ. сам</span><code>&lt;sup&gt;</code><span class="os">ъ</span><code>&lt;/sup&gt;&lt;/line&gt;</code></pre>
+                    <p>Omega with superscript <q>t</q> is rendered not as the single Unicode U+047f
+                            (<span class="os">ѿ</span>), but as omega followed by <q>t</q> wrapped
+                        in <code>&lt;sup&gt;</code> tags, e.g.:</p>
+                    <pre><code>&lt;line&gt;</code><span class="os">сль. и ѡ</span><code>&lt;sup&gt;</code><span class="os">т</span><code>&lt;/sup&gt;</code><span class="os">врьзши двєрце</span><code>&lt;/line&gt;</code></pre>
+                </div>
+                <div id="division">
+                    <h5>Word division</h5>
+                    <p>Word divsion is entirely editorial, which is to say that the editors insert
+                        spaces between all words, regardless of spacing in the manuscript. The
+                        particles <span class="os">се</span> (reflexive) and <span class="os"
+                            >же</span> are independent words, and are preceded by spaces. This is
+                        true even when they are superscripted, so <span class="os">ѡн
+                                &#x0a;<sup>ж</sup></span> (with a space before the superscript <span
+                            class="os">ж</span>) rather than <span class="os">ѡн<sup>ж</sup></span>
+                        (with the superscript <span class="os">ж</span> immediately adjacent to the
+                        preceding <span class="os">н</span>.</p>
+                </div>
+                <div id="color">
+                    <h5>Colored text</h5>
+                    <p>Text in red should be tagged as <code>&lt;red&gt;</code>. In cases where an
+                        entire line may be in red, the <code>&lt;red &gt;</code> tags should go
+                        inside the <code>&lt;line&gt;</code> tags, e.g., 1r2 should be encoded
+                        as:</p>
+                    <pre><code>&lt;line&gt;&lt;red&gt;</code><span class="os">женаго аврамиа. како п-</span><code>&lt;/red&gt;&lt;/line&gt;</code></pre>
+                    <p>Note that <code>&lt;red&gt;</code> tags, like <code>&lt;line&gt;</code> tags,
+                        may capture only the beginning or end of a word.</p>
+                </div>
+                <div id="abbreviation">
+                    <h5>Abbreviation</h5>
+                    <p>The 1973 edition expands abbreviations, wrapping the inserted letters in
+                        parentheses. We remove those, restoring a titlo or superscript letter plus
+                        pokrytie if there was one in the manuscript.</p>
+                </div>
+                <div id="lacunae">
+                    <h5>Lacunae in the manuscript</h5>
+                    <p>Some of the text that would have occurred on folios now missing from the
+                        manuscript has been restored in the 1973 edition on the basis of other
+                        manuscripts. For our purposes, we keep that text, without dividing it into
+                        lines, but surround it in <code>&lt;lacuna&gt;</code> tags.</p>
+                </div>
+                <div id="corrections">
+                    <h5>Corrections</h5>
+                    <p>Errors corrected in the manuscript by a scribe (original or subsequent) are
+                        encoded by creating a <code>&lt;subst&gt;</code> (= substitution) element.
+                            <code>&lt;subst&gt;</code> must have exactly two children, one instance
+                        of <code>&lt;del&gt;</code> (which contains the original reading that was
+                        subsequently corrected by the scribe) followed by one instance of
+                            <code>&lt;add&gt;</code> (which contains the text inserted by the scribe
+                        as a correction).</p>
+                    <p>If the original reading is illegible because of the correction, it may be
+                        rendered as a <code>&lt;gap/&gt;</code> element (with an optional
+                            <code>@extent</code> attribute to indicate the number of characters, if
+                        the editor can discern that with reasonable confidence) inside the
+                            <code>&lt;del&gt;</code> element. For example, the replacement of one
+                        illegible character with two at the end of 39v16 should be encoded as:</p>
+                    <pre><span class="os">ꙩбраз</span><code>&lt;subst&gt;&lt;del&gt;&lt;gap extent="1" reason="overwritten"/&gt;&lt;/del&gt;&lt;add&gt;</code><span class="os">ѡ<sup>м҇</sup></span><code>&lt;/add&gt;&lt;/subst&gt;</code></pre>
+                    <p>If the text is legible but unclear, it may be wrapped instead in
+                            <code>&lt;unclear&gt;</code> tags inside the <code>&lt;del&gt;</code>
+                        element.</p>
+                    <p>In case of corrections that do not involve the complete deletion of an
+                        initial value, the <code>&lt;del&gt;</code> element should carry the
+                        attribute <code>@status</code> with the value <q>partial</q>. For example,
+                        in 57r3 the scribe began to write <span class="os">л</span> and then
+                        corrected himself to <span class="os">и</span>, and we write:</p>
+                    <pre><span class="os">пом</span><code>&lt;subst&gt;&lt;del status="partial"&gt;</code><span class="os">л</span><code>&lt;/del&gt;&lt;add&gt;</code><span class="os">и</span><code>&lt;/add&gt;&lt;/subst&gt;</code><span class="os">шлꙗѥ</span></pre>
+                    <p>This markup is borrowed from the TEI P5 guidelines. The notion of partial
+                        deletion reflects the TEI interpretation that <code>&lt;del&gt;</code> does
+                        not have to mean complete deletion (in the case of the example above, the
+                        deletion is conceptual, rather than graphic). Note that the TEI
+                            <code>&lt;corr&gt;</code> element should not be used to encode
+                        corrections that can be read in the manuscript, that is, that were created
+                        by a scribe. <code>&lt;corr&gt;</code> is to be used only for corrections
+                        inserted by the modern editors, and at this stage in our development the
+                        editors of this project are not encoding any new corrections.</p>
+                </div>
+                <div id="insertions">
+                    <h5>Deletions and insertions</h5>
+                    <p>Text that has been erased and not replaced but that is still legible should
+                        be tagged as <code>&lt;del&gt;</code>. If the deleted text is not legible
+                        but it is clear that text was deleted, the <code>&lt;del&gt;</code> element
+                        should still be used, but it should contain only an empty <code>&lt;gap
+                            reason="erased"/&gt;</code> element, with an optional
+                            <code>@extent</code> attribute to indicate the number of erased letters,
+                        if the editor can determine that with reasonable confidence. For example,
+                        the five-character erasure at 40v8 should be transcribed as:</p>
+                    <pre><code>&lt;line&gt;</code><span class="os">вь доомь</span><code>&lt;del&gt;&lt;gap reason="erased" extent="5"/&gt;&lt;/del&gt;</code><span class="os">нисифоровь.</span><code>&lt;/line&gt;</code></pre>
+                    <p>Do not use <code>&lt;gap/&gt;</code> by itself for this purpose; wrapping it
+                        in <code>&lt;del&gt;</code> is what makes explicit that the gap results from
+                        scribal deletion, and not from <a href="#damage">damage</a> to the
+                        manuscript or for other reasons. If the text is partially legible, it is
+                        possible to combine raw text and <code>&lt;gap/&gt;</code> elements inside a
+                            <code>&lt;del&gt;</code> element. <code>&lt;gap/&gt;</code> optionally
+                        may contain an <code>@extent</code> attribute that records the estimated
+                        number of characters deleted, so that, for example</p>
+                    <pre><code>&lt;del&gt;</code><span class="os">и</span><code>&lt;gap reason="illegible" extent="2"/&gt;&lt;/del&gt;</code></pre>
+                    <p>records a three-letter erasure where the first letter can be read with
+                        reasonable confidence as <span class="os">и</span> and the next two are
+                        illegible.</p>
+                    <p>Text inserted into the manuscript by a later scribe should be tagged as
+                            <code>&lt;add&gt;</code>. If the editor is confident that the insertion
+                        is in a later hand, optional <code>@hand="other"</code> attribute markup may
+                        be included (insertions by the original scribe should omit the
+                            <code>@hand</code> attribute entirely, since the original scribal hand
+                        is assumed to be the default). For example, if the editor is confident that
+                        the superscript <span class="os">д</span> at 46r12 was added in a later
+                        hand, that can be encoded as:</p>
+                    <pre><span class="os">боу</span><code>&lt;add hand="other"&gt;&lt;sup&gt;</code><span class="os">д</span><code>&lt;/sup&gt;&lt;/add&gt;</code><span class="os">ть</span></pre>
+                    <p>Combinations of deletions and insertions that should be regarded as
+                        connected, that is, that should be considered a correction, should be
+                        encoded using <code>&lt;subst&gt;</code>, as described above, under <a
+                            href="#corrections">Corrections</a>.</p>
+                </div>
+                <div id="damage">
+                    <h5>Physical damage to the manuscript</h5>
+                    <p>Text that is legible but damaged should be tagged as
+                            <code>&lt;damage&gt;</code>, e.g., at 39v17:</p>
+                    <pre><span class="os">пав</span><code>&lt;damage&gt;</code><span class="os">ьль</span><code>&lt;/damage&gt;</code><span class="os">.</span></pre>
+                    <p>If the damaged text can be read, but not with confidence, it (or any unclear
+                        portions) can be wrapped in <code>&lt;unclear&gt;</code> tags inside the
+                            <code>&lt;damage&gt;</code> element. If the text cannot be read at all,
+                        it should be tagged as an empty <code>&lt;gap/&gt;</code> element inside
+                            <code>&lt;damage&gt;</code>, where <code>&lt;gap/&gt;</code> has an
+                        optional <code>@extent</code> attribute that indicates the approximate
+                        number of illegible characters (where the editor is able to discern).</p>
+                </div>
+                <div id="problem">
+                    <h5>Generic problems</h5>
+                    <p>Generic problems should be tagged as <code>&lt;problem&gt;</code>. These will
+                        be resolved and reclassified later, after discussion, and this interim
+                        markup will help find them at that time.</p>
+                </div>
+            </div>
+            <div>
+                <h4>Features of the text</h4>
+                <div id="beginning">
+                    <h5>The beginning and end of a text</h5>
+                    <p>The beginning of the text being edited is marked by inserting an empty
+                            <code>&lt;start/&gt;</code> tag before the line on which the text
+                        begins, and the end of that test is marked by inserting an empty
+                            <code>&lt;end/&gt;</code> tag after the last line. For example, if the
+                        text being edited begins on the third line of folio 22r, the markup would
+                        look as follows:</p>
+                    <pre><code>&lt;folio n="22r"&gt;
+&lt;line&gt;</code>first line of 22r<code>&lt;/line&gt;
+&lt;line&gt;</code>second line of 22r<code>&lt;/line&gt;
+&lt;start/&gt;
+&lt;line&gt;</code>third line of 22r<code>&lt;/line&gt;
+&lt;!-- more lines --&gt;</code></pre>
+                    <p>There should be exactly one <code>&lt;start/&gt;</code> and one
+                            <code>&lt;end/&gt;</code> tag in each file, surrounding the text being
+                        edited at the moment. Do not mark the end of the preceding text or the
+                        beginning of the following one; that is, in the example above, do not
+                        include an <code>&lt;end/&gt;</code> before the
+                        <code>&lt;start/&gt;</code></p>
+                </div>
+            </div>
+            <div>
+                <h4>Features of the digital edition</h4>
+                <div id="metadata">
+                    <h5>The root element and information about the editor</h5>
+                    <p>The entire edited section is wrapped in a single <code>&lt;root&gt;</code>
+                        element. The first subelement inside the <code>&lt;root&gt;</code> must be a
+                            <code>&lt;metadata&gt;</code> element, which contains the
+                            <code>&lt;name&gt;</code> and <code>&lt;email&gt;</code> of the primary
+                        person who edited the section. (This assumes that every section will have
+                        exactly one editor to be credited officially on the site.) The following
+                        example shows the beginning of thais.xml, and demonstrates the
+                            <code>&lt;root&gt;</code> start tag at the beginning of the file, the
+                            <code>&lt;metadata&gt;</code> element with its <code>&lt;name&gt;</code>
+                        and <code>&lt;email&gt;</code> children, the <code>&lt;folio&gt;</code> tag
+                        for folio 106v, which is where this text begins, the
+                            <code>&lt;line&gt;</code> tags for the lines on that folio, and the
+                            <code>&lt;start/&gt;</code> tag before the first line of the text of the
+                        Vita of Thaïs. This example also includes the <code>&lt;sup&gt;</code>
+                        element for superscript characters and an <code>&lt;editionPageNo&gt;</code>
+                        element, about which see below:</p>
+                    <pre><code>&lt;root&gt;
+    &lt;metadata&gt;
+        &lt;name&gt;</code>Alexandre Popowycz<code>&lt;/name&gt;
+        &lt;email&gt;</code>alexandre.popowycz@ugent.be<code>&lt;/email&gt;
+    &lt;/metadata&gt;
+    &lt;folio n="106v"/&gt;
+    &lt;line&gt;</code><span class="os">рцами. и исписах ѥи все стра-</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">сти юже имѣ кь бѣсоу борбꙋ.</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">и кь ѡбразномоу и змїю, и</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">все м҃лтвы ѥє. и поустихь</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">кь всѣ</span><code>&lt;sup&gt;</code><span class="os">м҇</span><code>&lt;/sup&gt;</code><span class="os"> хр</span><code>&lt;sup&gt;</code><span class="os">с҇</span><code>&lt;/sup&gt;</code><span class="os">тїанѡ</span><code>&lt;sup&gt;</code><span class="os">м҇</span><code>&lt;/sup&gt;</code><span class="os"> сь всею исти-</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">ною. сконьча же се. с҃таа моу-</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">ченица марина, м</span><code>&lt;sup&gt;</code><span class="os">с҇</span><code>&lt;/sup&gt;</code><span class="os">ца їоулѣ</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">вь, з҃і҃. и твореще ѥи паметь</span><code>,&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">сп҃сениѥ оулоучимь. вь име</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">г҃а нашего іс҃ х҃а. ємꙋже сла</span><code>&lt;sup&gt;</code><span class="os">в҇</span><code>&lt;/sup&gt;&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">и дрьжава сь безначелнимь</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">єго ѡ҃цемь. и сь прѣс҃тымь</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">и бл҃гымь и животворещимь</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">д҃хомь твоимь, н҃нѣ и пр҃сно:—</span><code>&lt;/line&gt;
+    &lt;start/&gt;
+    &lt;line&gt;&lt;editionPageNo n="130"/&gt;</code><span class="os">ЖИТИѤ И ЖИЗНЬ ПРѢ-</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">по</span><code>&lt;sup&gt;</code><span class="os">д</span><code>&lt;/sup&gt;</code><span class="os">бниѥ ѳаисиѥ,</span><code>&lt;/line&gt;
+    &lt;line&gt;</code><span class="os">Братиꙗ моꙗ пр</span><code>&lt;sup&gt;</code><span class="os">с҇</span><code>&lt;/sup&gt;</code><span class="os">наа, хощꙋ ва</span><code>&lt;sup&gt;</code><span class="os">м҇</span><code>&lt;/sup&gt;&lt;/line&gt;
+    &lt;!-- text continues --&gt;
+&lt;/root&gt;</code></pre>
+                </div>
+            </div>
+            <div>
+                <h4>Features of the 1973 print edition</h4>
+                <div id="paragraphs">
+                    <h5>Paragraph numbering</h5>
+                    <p>Some of the texts in the 1973 edition number paragraphs or larger sections.
+                        This information is retained as empty (self-closing)
+                            <code>&lt;editionParagraphNo&gt;</code> elements with an <code>@n</code>
+                        attribute to indicate the numerical value, with a space before and after,
+                        e.g.:</p>
+                    <pre><code>&lt;line&gt;</code><span class="os">лы. </span><code>&lt;editionParagraphNo n="28"/&gt;</code> <span class="os">ре</span><code>&lt;sup&gt;</code><span class="os">ч</span><code>&lt;/sup&gt;</code><span class="os"> же вь себѣ азь оужє</span><code>&lt;/line&gt;</code></pre>
+                </div>
+                <div id="pages">
+                    <h5>Page numbers</h5>
+                    <p>Page numbers from the typeset edition are not present in the OCR output, and
+                        must be inserted manually into the XML by the editors. The markup for this
+                        purpose is an empty (self-closing) <code>&lt;editionPageNo&gt;</code>
+                        element with an <code>@n</code> attribute, the value of which corresponds to
+                        the beginning of a page in the 1973 edition, e.g.:</p>
+                    <pre><code>&lt;line&gt;</code><span class="os">неже </span><code>&lt;editionPageNo n="44"/&gt;</code><span class="os"> бо бѣ ѡ</span><code>&lt;sup&gt;</code><span class="os">т</span><code>&lt;/sup&gt;</code><span class="os">ць єѥ, имѣ-</span><code>&lt;/line&gt;</code></pre>
+                </div>
+                <div id="asterisks">
+                    <h5>Asterisks and footnotes</h5>
+                    <p>Asterisks in the 1973 edition point to a wide variety of editorial footnotes.
+                        When correcting the OCR, the asterisks should be retained during editing,
+                        but in places where they indicate that the editors have replaced the actual
+                        manuscript text with their own emendation, the actual manuscript text (in
+                        the footnote in the typeset edition) should be restored to the
+                        transcription.</p>
+                </div>
+            </div>
+        </div>
+        <div id="character">
+            <h3>Transcription and character coding</h3>
+            <div>
+                <h4>Letters</h4>
+                <div id="capitalization">
+                    <h5>Capitalization</h5>
+                    <p>The 1973 edition capitalizes proper nouns, sentence-initial letters, etc. We
+                        correct those according to the manuscript, which means that we use capital
+                        letters only for letters that are large in the manuscript, typically
+                        initials and the title at the beginning.</p>
+                </div>
+                <div id="ligatures">
+                    <h5>Ligatures</h5>
+                    <p>Ligatures are wrapped in <code>&lt;lig&gt;</code> tags, e.g.:</p>
+                    <pre><span class="os">р</span><code>&lt;lig&gt;</code><span class="os">ау</span><code>&lt;/lig&gt;</code><code>&lt;sup&gt;</code><span class="os">д</span><code>&lt;/sup&gt;</code><span class="os">е</span> (13v2)</pre>
+                </div>
+                <div id="e">
+                    <h5>Broad and narrow <q>e</q> (<span class="os">е</span> ~ <span class="os"
+                            >є</span>)</h5>
+                    <p>The manuscript distinguishes broad and narrow <q>e</q>, but these are not
+                        distinguished in the 1973 edition. We correct this programmatically after
+                        OCR to bring the distribution into agreement with the general scribal
+                        orthographic norm, writing narrow <q>e</q> (<span class="os">е</span>) after
+                        consonant letters and broad <q>e</q> (<span class="os">є</span>) elsewhere,
+                        that is, after vowel letters and in initial position. Because the scribe may
+                        occasionally violate his own norm, editors of the new digital edition need
+                        to proofread especially carefully for such deviations and correct the
+                        transcription, so that it comes to represent the actual spellings in the
+                        manuscript.</p>
+                </div>
+                <div id="o">
+                    <h5><q>o</q> letters (<span class="os">о</span> ~ <span class="os">ѡ</span> ~
+                            <span class="os">ꙩ</span> ~ <span class="os">ꙫ</span> ~ <span class="os"
+                            >оо</span>)</h5>
+                    <p>The manuscript includes omicron (<span class="os">о</span>), omega (<span
+                            class="os">ѡ</span>), ocular <q>o</q> (<span class="os">ꙩ</span>, e.g.,
+                        6v16), binocular <q>o</q> (<span class="os">ꙫ</span>, e.g., 5r12) and broad
+                            <q>o</q> (<span class="os">ѻ</span>, e.g., 8v8). The double omicron
+                            (<span class="os">оо</span>) is a distinctive feature of the orthography
+                        of this manuscript, and is transcribed as a sequence of two regular omicron
+                        letters. The two omicrons typically are touching, and therefore technically
+                        a ligature, but we’ll add the ligature markup automatically after editing,
+                        so the editors do not have to type the tags manually in these cases.</p>
+                </div>
+                <div id="u">
+                    <h5><q>u</q> letters</h5>
+                    <p>The sound [u] may be spelled as omicron plus <q>u</q> (this should be encoded
+                        as two characters, regular <q>o</q> followed by regular <q>u</q>, e.g.,
+                        beginning of <span class="os">оумершꙋ</span> 1v4), <span class="os">ꙋ</span>
+                        (e.g., end of <span class="os">оумершꙋ</span> 1v4), and with superscript
+                            <span class="os">у</span> over omicron, i.e., <span class="os"
+                                >о<sup>у</sup></span> (e.g., <span class="os"
+                            >о<sup>у</sup>ловити</span> 3r3). Note that this means that we have a
+                            <code>&lt;sup&gt;</code> element within a <code>&lt;sup&gt;</code>
+                        element in the case of <span class="os"
+                            >второом<sup>о<sup>у</sup></sup></span> 6v15:</p>
+                    <pre><span class="os">второом</span><code>&lt;sup&gt;</code><span class="os">о</span><code>&lt;sup&gt;</code><span class="os">у</span><code>&lt;/sup&gt;&lt;/sup&gt;</code></pre>
+                </div>
+                <div id="jery">
+                    <h5>Jery and jer letters</h5>
+                    <p>Jery in the manuscript is regularly written with two marks over the second
+                        component, which sometimes looks like two dots and sometimes like a kendema
+                        (double grave accent). In all cases we render the jery like regular jery,
+                        with front jer onset and without any superscript diacritic (cf. below
+                        concerning <a href="#other_diacritics">diacritics</a>): <span class="os"
+                            >ы</span>.</p>
+                    <p>All jer letters are written as front jer (<span class="os">ь</span>) unless
+                        they are unambiguously back jers (<span class="os">ъ</span>), which normally
+                        occurs only at the ends of lines.</p>
+                </div>
+                <div id="t">
+                    <h5><q>t</q> letters</h5>
+                    <p>There are three basic shapes of the <q>t</q> letter: three-legged (e.g.,
+                            <span class="os">что</span> 4r5), regular (but with strong serifs on the
+                        ends of the crossbar, e.g., <span class="os">что</span> 4r4), and a tall
+                            <q>t</q> (e.g., <span class="os">что</span> 4r12). These are all
+                        transcribed, identically, as regular <span class="os">т</span>.</p>
+                </div>
+            </div>
+            <div>
+                <h4>Non-letters</h4>
+                <div id="diacritics">
+                    <div id="titlo">
+                        <h5>Titlo and pokrytie</h5>
+                        <p>Titlo is transcribed over the last continuous letter of the word
+                            (counting from the beginning) before the first omission, without regard
+                            to where it appears graphically in the manuscript. In this way, the
+                            titlo records the fact that there is a titlo in the manuscript, but does
+                            not attempt to record its exact placement over a particular base
+                            character. This accommodates the fact that titlo may be placed not only
+                            over individual letters, but also between letters, and that it may span
+                            multiple letters, all of which are features that are impractical to
+                            represent in a character-based transcription. The imperative to
+                            transcribe with exact placement is relaxed because we provide also
+                            photographs, so that users who require this level of paleographic detail
+                            have access to it by way of the photographs. Thus:</p>
+                        <ul>
+                            <li><span class="os">гл҃аше</span> (13r9) for <span class="os"
+                                    >гл(агол)аше</span> because, in keeping with usual abbreviation
+                                convention, the <span class="os">а</span> that is present in the
+                                manuscript is most likely the second one, so the first omitted
+                                letter is the first <span class="os">а</span>, which means that the
+                                last consecutive non-omitted letter from the beginning of the word
+                                is the first <span class="os">л</span> of the word.</li>
+                            <li><span class="os"> н҃бсѣхь</span> for <span class="os"
+                                    >н(е)б(е)сѣхь</span>, even in situations where the manuscript
+                                may read <span class="os">нб҃сѣхь</span> (with titlo over the <span
+                                    class="os">б</span>), because the last consecutive non-omitted
+                                letter from the beginning of the word is <span class="os">н</span>.
+                                In this respect the transcription reflects that the word is
+                                abbreviated and contains a titlo, but it does not attempt to
+                                reproduce the placement of the titlo. In this particular case, the
+                                titlo that occurs over the <span class="os">б</span> in the
+                                manuscript extends also over the following <span class="os"
+                                >с</span>, but we nonetheless write it only over the initial <span
+                                    class="os">н</span>.</li>
+                            <li>We write only one titlo per word, even if the manuscript contains
+                                more than one, so <span class="os">н҃бсе</span> for <span class="os"
+                                    >н(е)б(е)се</span> even where the manuscript might read <span
+                                    class="os">н҃б҃се</span>.</li>
+                            <li>We write Jesus Christ as two words, with a titlo over each part,
+                                e.g., <span class="os">іс҃ х҃с</span> (75r16).</li>
+                        </ul>
+                        <p>Exception: if the last consecutive non-omitted letter from the beginning
+                            of the word is superscripted, we place the titlo over the following
+                            letter. Thus <span class="os">ѡ<sup>т҇</sup>ц҃ь</span> for <span
+                                class="os">ѡт(ь)ць</span>.</p>
+                        <p>We write pokrytie over superscript letters where it appears in the
+                            manuscript. This manuscript does not strongly distinguish titlo and
+                            pokrytie by ductus (that is, the squiggles look similar); we use titlo
+                            (&#xa0; ҃&#xa0;) exclusively over in-line base characters and pokrytie
+                            (&#xa0; ҇&#xa0;) exclusively over superscript characters.</p>
+                    </div>
+                    <div id="other_diacritics">
+                        <h5>Other diacritics</h5>
+                        <p>Accent marks and other diacritics (other than <a href="#titlo">titlo and
+                                pokrytie</a>) are omitted.</p>
+                    </div>
+                    <div id="numbers">
+                        <h5>Numbers</h5>
+                        <p>Numbers are rendered as they appear in the manuscript, that is, as
+                            Cyrillic letters, often with titlo and often preceded or followed by a
+                            comma or mid-dot. Numbers in this manuscript are always preceded by
+                            punctuation, even where it is not required syntactically, and the
+                            punctuation is written adjacent to preceding letter, followed by a
+                            space, followed by the number, e.g., <span class="os">дни. і҃е</span>
+                            (with the dot next to the preceding <span class="os">и</span> and
+                            followed by a space), rather than <span class="os">дни .і҃е</span> (with
+                            the space before the dot, which is then adjacent to the following <span
+                                class="os">і</span>). The decisive example is <span class="os">б҃оу.
+                                | к҃. лѣ<sup>т҇</sup>,</span> 2v11–12, where a line break clearly
+                            associates the dot with the preceding word, and not with the following
+                            number.</p>
+                    </div>
+                    <div id="punctuation">
+                        <h5>Punctuation</h5>
+                        <p>The 1973 edition uses punctuation supplied by the editors. We remove
+                            that, encoding punctuation as it occurs in the actual manuscript. See
+                            the section about <a href="#numbers">numbers</a>, above, concerning
+                            punctuation adjacent to numbers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

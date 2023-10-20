@@ -1,0 +1,14 @@
+<div id="widgets">
+  <select id="fontChooser" onchange="changeFont(this.options[this.selectedIndex].value);">
+    <option>Choose font</option>
+    <option value="BukyvedeWeb">Bukyvede</option>
+    <option value="KlimentStdWeb">KlimentStd</option>
+    <option value="LazovWeb">Lazov</option>
+    <option value="MenaionWeb">Menaion</option>
+  </select>
+  <span id="magnifierToggleWrapper">
+    <input id="toggleMagnifier" type="checkbox" onclick="toggleMagnifier();"/>
+    <label for="toggleMagnifier">Toggle magnifier</label>
+  </span>
+    <!--#include virtual="choose-page.xml" -->
+</div>
