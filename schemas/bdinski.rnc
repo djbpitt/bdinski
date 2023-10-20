@@ -15,19 +15,20 @@ start = root
 # subcomponent of a line
 # =====================================================================
 lineContent =
-    mixed {
-        (editionParagraphNo
-         | editionPageNo
-         | sup
-         | lig
-         | gap
-         | add
-         | red
-         | subst
-         | supplied
-         | damage
-         | problem)*
-    }
+  mixed {
+    (editionParagraphNo
+     | editionPageNo
+     | sup
+     | lig
+     | gap
+     | add
+     | red
+     | subst
+     | supplied
+     | damage
+     | problem
+     | sic)*
+  }
 # =====================================================================
 # 
 # =====================================================================
@@ -40,10 +41,10 @@ lineContent =
 # last line of that text. The position of <start/> and <end/> is controlled separately by bdinski.sch.
 # =====================================================================
 root =
-    element root {
-        metadata,
-        (folio, (line | lacuna | \start | end)+)+
-    }
+  element root {
+    metadata,
+    (folio, (line | lacuna | \start | end)+)+
+  }
 # =====================================================================
 # 
 # =====================================================================
@@ -58,12 +59,12 @@ email = element email { text }
 # <folio> is an empty element with an @n attribute, the value of which is a number followed by "r" or "v"
 # =====================================================================
 folio =
-    element folio {
-        attribute n {
-            xsd:token { pattern = "\d+[rv]" }
-        },
-        empty
-    }
+  element folio {
+    attribute n {
+      xsd:token { pattern = "\d+[rv]" }
+    },
+    empty
+  }
 # =====================================================================
 # 
 # =====================================================================
@@ -81,12 +82,12 @@ lacuna = element lacuna { (folio_lacuna | line)+ }
 # a, b, c, and d are permitted in addition to sides r and v.
 # =====================================================================
 folio_lacuna =
-    element folio {
-        attribute n {
-            xsd:token { pattern = "\d+[rvabcd]" },
-            empty
-        }
+  element folio {
+    attribute n {
+      xsd:token { pattern = "\d+[rvabcd]" },
+      empty
     }
+  }
 # =====================================================================
 # 
 # =====================================================================
@@ -116,10 +117,10 @@ line = element line { lineContent }
 # records the numerical value.
 # =====================================================================
 editionParagraphNo =
-    element editionParagraphNo {
-        attribute n { xsd:integer },
-        empty
-    }
+  element editionParagraphNo {
+    attribute n { xsd:integer },
+    empty
+  }
 # =====================================================================
 # 
 # =====================================================================
@@ -128,20 +129,20 @@ editionParagraphNo =
 # numerical value.
 # =====================================================================
 editionPageNo =
-    element editionPageNo {
-        attribute n { xsd:integer },
-        empty
-    }
+  element editionPageNo {
+    attribute n { xsd:integer },
+    empty
+  }
 # =====================================================================
 # 
 # =====================================================================
 # superscript text is encoded as a <sup> elements. These may be nested, that is, a superscript
-# characater may have another superscript character on top of it. 
+# character may have another superscript character on top of it. 
 # =====================================================================
 sup =
-    element sup {
-        mixed { sup* }
-    }
+  element sup {
+    mixed { sup* }
+  }
 # =====================================================================
 # 
 # =====================================================================
@@ -165,8 +166,8 @@ lig = element lig { text }
 # text, typically within a line; large lacunae are tagged as <lacuna>. If the supplied text
 # has a specific source, such as an edition or another manuscript, and was not just invented
 # by the tagger, the source should be indicated with the @source attribute. The reason for
-# the lacuna must be indiated with a @reason attribute, the only legal values of which are
-# 'illegible', 'omitted', and 'damage'.
+# the lacuna must be indicated with a @reason attribute, the only legal values of which are
+# 'illegible', 'omitted', 'damage', and 'erased'.
 # =====================================================================
 supplied = element supplied { reason, source?, lineContent }
 source = attribute source { text }
@@ -190,7 +191,7 @@ end = element end { empty }
 # 
 # <del> and <add> may also occur independently, <del> for deletions that are not replaced (such
 # as erasures) and <add> for insertions. 
-#
+# 
 # <add> may record, in an optional @place attribute, the location of an insertion, where the only
 # legal value (at the moment) is 'sl' (supralinear). <add> may also record, with a @hand attribute 
 # that has the value "other", that the insertion is not in the original hand (the only legal value 
@@ -203,13 +204,19 @@ end = element end { empty }
 # number of characters missing.
 # =====================================================================
 subst = element subst { add, del }
+# =====================================================================
+# 
+# =====================================================================
+# Below are small inline elements, the meanings of which should be clear from the names.
+# =====================================================================
 del = element del { status?, (unclear | lineContent) }
 status = attribute status { "partial" }
 unclear = element unclear { lineContent }
 add = element add { place?, hand?, lineContent }
-place = attribute place { 'sl' }
+place = attribute place { "sl" }
 hand = attribute hand { "other" }
 gap = element gap { reason, extent?, empty }
 extent = attribute extent { xsd:int }
 damage = element damage { unclear | gap | lineContent }
 problem = element problem { lineContent }
+sic = element sic { lineContent }
